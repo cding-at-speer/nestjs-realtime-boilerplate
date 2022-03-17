@@ -8,6 +8,17 @@ import validationOptions from './utils/validation-options';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule, { cors: true });
+  app.use((req, res, next) => {
+    res.header('Access-Control-Allow-Origin', 'localhost:3001');
+    res.header('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE');
+    res.header('Access-Control-Allow-Headers', 'Content-Type, Accept');
+    next();
+});
+
+app.enableCors({
+    allowedHeaders:"*",
+    origin: "localhost:3001"
+});
   const configService = app.get(ConfigService);
 
   app.enableShutdownHooks();
