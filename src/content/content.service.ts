@@ -33,6 +33,7 @@ export class ContentService {
   }
 
   update(id: number, updateContentDto: UpdateContentDto) {
+    console.log(updateContentDto);
     return `This action updates a #${id} content`;
   }
   // return this.usersRepository.save(

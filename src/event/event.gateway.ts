@@ -3,13 +3,10 @@ import {
   SubscribeMessage,
   MessageBody,
   WebSocketServer,
-  WsResponse,
 } from '@nestjs/websockets';
 import { EventService } from './event.service';
 import { CreateEventDto } from './dto/create-event.dto';
 import { UpdateEventDto } from './dto/update-event.dto';
-import { from, Observable } from 'rxjs';
-import { map } from 'rxjs/operators';
 import { Server } from 'ws';
 import { Client } from 'pg';
 
@@ -20,7 +17,7 @@ export class EventGateway {
   server: Server;
 
   @SubscribeMessage('events')
-  onEvent(client: any, data: any): any {
+  onEvent(client, data) {
     console.log(data);
     const db = {
       user: 'root',
@@ -30,9 +27,16 @@ export class EventGateway {
       port: 5432,
     };
     const pg_client = new Client(db);
-    pg_client.connect();
+    pg_client
+      .connect()
+      .then((data) => {
+        console.log(data);
+      })
+      .catch((e) => {
+        console.log(e);
+      });
     const query = pg_client.query('LISTEN addedrecord');
-
+    console.log(query);
     pg_client.on('notification', function (content) {
       console.log('msg sent: ' + content.payload);
       client.send(content.payload);

@@ -5,7 +5,6 @@ import {
   WebSocketServer,
 } from '@nestjs/websockets';
 import { ContentsubService } from './contentsub.service';
-import { Socket } from 'socket.io';
 
 @WebSocketGateway(4002)
 export class ContentsubGateway {
