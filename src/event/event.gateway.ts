@@ -20,7 +20,7 @@ export class EventGateway implements OnGatewayConnection, OnGatewayDisconnect {
     this.wsClients.push(client);
     this.eventService.wsClient = this.wsClients;
     console.log('connected: ' + client);
-    console.log(args)
+    console.log(args);
   }
   handleDisconnect(client) {
     for (let i = 0; i < this.wsClients.length; i++) {
