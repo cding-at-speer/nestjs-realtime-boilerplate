@@ -1,4 +1,4 @@
-import { Entity, Column, PrimaryGeneratedColumn } from 'typeorm';
+import { Entity, Column, PrimaryGeneratedColumn, AfterInsert } from 'typeorm';
 
 @Entity()
 export class Content {
@@ -7,4 +7,9 @@ export class Content {
 
   @Column()
   content: string;
+
+  @AfterInsert()
+  resetCounters() {
+    console.log('test---insert');
+  }
 }

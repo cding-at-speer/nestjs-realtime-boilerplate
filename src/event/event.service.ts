@@ -1,28 +1,28 @@
 import { Injectable } from '@nestjs/common';
-import { CreateEventDto } from './dto/create-event.dto';
-import { UpdateEventDto } from './dto/update-event.dto';
 
+import { Client } from 'pg';
 @Injectable()
 export class EventService {
-  create(createEventDto: CreateEventDto) {
-    console.log(createEventDto);
-    return 'This action adds a new event';
-  }
-
-  findAll() {
-    return `This action returns all event`;
-  }
-
-  findOne(id: number) {
-    return `This action returns a #${id} event`;
-  }
-
-  update(id: number, updateEventDto: UpdateEventDto) {
-    console.log(updateEventDto);
-    return `This action updates a #${id} event`;
-  }
-
-  remove(id: number) {
-    return `This action removes a #${id} event`;
+  public wsClient = [];
+  async init() {
+    const db = {
+      user: 'root',
+      host: 'localhost',
+      database: 'api',
+      password: 'secret',
+      port: 5432,
+    };
+    const pg_client = new Client(db);
+    await pg_client.connect();
+    await pg_client.query('LISTEN addedrecord');
+    pg_client.on(
+      'notification',
+      function (content) {
+        console.log('main.ts: msg sent: ' + content.payload);
+        for (const c of this.wsClient) {
+          c.send(content.payload);
+        }
+      }.bind(this),
+    );
   }
 }

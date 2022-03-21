@@ -29,7 +29,6 @@ import { MailModule } from './mail/mail.module';
 import { HomeModule } from './home/home.module';
 import { EventModule } from './event/event.module';
 import { ContentModule } from './content/content.module';
-import { ContentsubModule } from './contentsub/contentsub.module';
 
 @Module({
   imports: [
@@ -82,7 +81,7 @@ import { ContentsubModule } from './contentsub/contentsub.module';
     HomeModule,
     EventModule,
     ContentModule,
-    ContentsubModule,
   ],
+  providers: [],
 })
 export class AppModule {}
